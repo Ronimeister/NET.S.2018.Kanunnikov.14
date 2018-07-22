@@ -15,3 +15,11 @@
 
 
    Реализовать метод-генератор последовательности чисел Фибоначчи. Разработать unit-тесты.
+
+
+3) [Решение](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/BinarySearchLib)
+
+   [Тесты](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/BinarySearchLibTests)
+
+
+   Реализовать обобщенный алгоритм бинарного поиска. Разработать unit-тесты.
