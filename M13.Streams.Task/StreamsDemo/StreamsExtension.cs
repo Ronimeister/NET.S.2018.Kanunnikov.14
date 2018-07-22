@@ -15,49 +15,55 @@ namespace StreamsDemo
 
         #region Public members
 
-        #region TODO: Implement by byte copy logic using class FileStream as a backing store stream .
-
         public static int ByByteCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
             byte[] byteArray;
-            using (FileStream readStream = new FileStream(sourcePath, FileMode.Open))
+            using (FileStream readStream = File.OpenRead(sourcePath))
             {
                 byteArray = new byte[readStream.Length];
-                readStream.Read(byteArray, 0, byteArray.Length);
+                readStream.Read(byteArray, 0, byteArray.Length);               
+            }
 
-                using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
-                {
-                    writeStream.Write(byteArray, 0, byteArray.Length);
-                }
-            }           
+            using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
+            {
+                writeStream.Write(byteArray, 0, byteArray.Length);
+            }
 
             return byteArray.Length;
         }
-
-        #endregion
-
-        #region TODO: Implement by byte copy logic using class MemoryStream as a backing store stream.
-
+        
         public static int InMemoryByByteCopy(string sourcePath, string destinationPath)
         {
-            // TODO: step 1. Use StreamReader to read entire file in string
-
-            // TODO: step 2. Create byte array on base string content - use  System.Text.Encoding class
-
-            // TODO: step 3. Use MemoryStream instance to read from byte array (from step 2)
-
-            // TODO: step 4. Use MemoryStream instance (from step 3) to write it content in new byte array
-
-            // TODO: step 5. Use Encoding class instance (from step 2) to create char array on byte array content
-
-            // TODO: step 6. Use StreamWriter here to write char array content in new file
             InputValidation(sourcePath, destinationPath);
+            string readingResult = string.Empty;
 
-            throw new NotImplementedException();
+            using (StreamReader sr = new StreamReader(sourcePath, Encoding.UTF8))
+            {
+                readingResult = sr.ReadToEnd();
+            }
+
+            byte[] readingResultBytes = Encoding.UTF8.GetBytes(readingResult);
+            byte[] writingBytes = new byte[readingResultBytes.Length];
+
+            using (MemoryStream ms = new MemoryStream(readingResultBytes, 0, readingResultBytes.Length))
+            {
+                ms.Write(readingResultBytes, 0, readingResultBytes.Length);
+                writingBytes = ms.ToArray();
+            }
+
+            char[] writingChars = Encoding.UTF8.GetChars(writingBytes);
+
+            using (StreamWriter sw = new StreamWriter(destinationPath, false, Encoding.UTF8))
+            {
+                foreach (char c in writingChars)
+                {
+                    sw.Write(c);
+                }
+            }
+
+            return writingBytes.Length;
         }
-
-        #endregion
 
         #region TODO: Implement by block copy logic using FileStream buffer.
 
