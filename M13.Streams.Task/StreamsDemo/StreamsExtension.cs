@@ -86,17 +86,35 @@ namespace StreamsDemo
             return byteArray.Length;
         }
 
-        #region TODO: Implement by block copy logic using MemoryStream.
-
         public static int InMemoryByBlockCopy(string sourcePath, string destinationPath)
         {
-            // TODO: Use InMemoryByByteCopy method's approach
             InputValidation(sourcePath, destinationPath);
+            string readingResult = string.Empty;
 
+            using (StreamReader sr = new StreamReader(sourcePath, Encoding.UTF8))
+            {
+                readingResult = sr.ReadToEnd();
+            }
+
+            byte[] readingResultBytes = Encoding.UTF8.GetBytes(readingResult);
+            byte[] writingBytes = new byte[readingResultBytes.Length];
+
+            using (MemoryStream ms = new MemoryStream(readingResultBytes, 0, readingResultBytes.Length))
+            {
+                ms.Write(readingResultBytes, 0, readingResultBytes.Length);
+                writingBytes = ms.ToArray();
+            }
+
+            char[] writingChars = Encoding.UTF8.GetChars(writingBytes);
+
+            using (StreamWriter sw = new StreamWriter(destinationPath, false, Encoding.UTF8))
+            {
+                sw.WriteLine(writingChars);
+            }
+
+            return writingBytes.Length;
             throw new NotImplementedException();
         }
-
-        #endregion
 
         #region TODO: Implement by block copy logic using class-decorator BufferedStream.
 
