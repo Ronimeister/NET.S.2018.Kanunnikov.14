@@ -12,7 +12,6 @@ namespace StreamsDemo
 
     public static class StreamsExtension
     {
-
         #region Public members
         public static int ByByteCopy(string sourcePath, string destinationPath)
         {
@@ -113,45 +112,68 @@ namespace StreamsDemo
             }
 
             return writingBytes.Length;
-            throw new NotImplementedException();
         }
-
-        #region TODO: Implement by block copy logic using class-decorator BufferedStream.
 
         public static int BufferedCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
 
-            throw new NotImplementedException();
+            int bufferSize = 10000;
+            byte[] readedBytes;
+            using (FileStream fs = File.OpenRead(sourcePath))
+                using(BufferedStream bs = new BufferedStream(fs, bufferSize))
+                {
+                    readedBytes = new byte[fs.Length];
+                    bs.Read(readedBytes, 0, readedBytes.Length);                    
+                }
+
+            using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
+            {
+                writeStream.Write(readedBytes, 0, readedBytes.Length);
+            }
+
+            return readedBytes.Length;
         }
-
-        #endregion
-
-        #region TODO: Implement by line copy logic using FileStream and classes text-adapters StreamReader/StreamWriter
 
         public static int ByLineCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
 
-            throw new NotImplementedException();
+            string[] buffer = File.ReadAllLines(sourcePath);
+
+            using (FileStream fs = new FileStream(destinationPath, FileMode.Open))
+            {
+                using(TextWriter tw = new StreamWriter(fs))
+                {
+                    foreach(string s in buffer)
+                    {
+                        tw.WriteLine(s);
+                    }
+                }
+            }
+
+            return buffer.Length;
         }
-
-        #endregion
-
-        #region TODO: Implement content comparison logic of two files 
-
+        
         public static bool IsContentEquals(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
-            throw new NotImplementedException();
-        }
 
-        #endregion
+            byte[] lhs = File.ReadAllBytes(sourcePath);
+            byte[] rhs = File.ReadAllBytes(destinationPath);
+            for(int i = 0; i < lhs.Length; i++)
+            {
+                if (lhs[i] != rhs[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         #endregion
 
         #region Private members
-        #region TODO: Implement validation logic
-
         private static void InputValidation(string sourcePath, string destinationPath)
         {
             if (string.IsNullOrEmpty(sourcePath))
@@ -174,8 +196,6 @@ namespace StreamsDemo
                 throw new ArgumentException($"{nameof(destinationPath)} isn't exist on this computer!");
             }
         }
-
-        #endregion
         #endregion
     }
 }
