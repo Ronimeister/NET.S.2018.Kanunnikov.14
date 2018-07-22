@@ -14,7 +14,6 @@ namespace StreamsDemo
     {
 
         #region Public members
-
         public static int ByByteCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
@@ -27,7 +26,10 @@ namespace StreamsDemo
 
             using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
             {
-                writeStream.Write(byteArray, 0, byteArray.Length);
+                foreach(byte b in byteArray)
+                {
+                    writeStream.WriteByte(b);
+                }
             }
 
             return byteArray.Length;
@@ -65,16 +67,24 @@ namespace StreamsDemo
             return writingBytes.Length;
         }
 
-        #region TODO: Implement by block copy logic using FileStream buffer.
-
         public static int ByBlockCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
 
-            throw new NotImplementedException();
-        }
+            byte[] byteArray;
+            using (FileStream readStream = File.OpenRead(sourcePath))
+            {
+                byteArray = new byte[readStream.Length];
+                readStream.Read(byteArray, 0, byteArray.Length);
+            }
 
-        #endregion
+            using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
+            {
+                writeStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            return byteArray.Length;
+        }
 
         #region TODO: Implement by block copy logic using MemoryStream.
 
@@ -119,11 +129,9 @@ namespace StreamsDemo
         }
 
         #endregion
-
         #endregion
 
         #region Private members
-
         #region TODO: Implement validation logic
 
         private static void InputValidation(string sourcePath, string destinationPath)
@@ -150,8 +158,6 @@ namespace StreamsDemo
         }
 
         #endregion
-
         #endregion
-
     }
 }
