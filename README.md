@@ -17,3 +17,8 @@
    [Тесты](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/BinarySearchLibTests)
 
    Реализовать обобщенный алгоритм бинарного поиска. Разработать unit-тесты.
+
+4) [Решение](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/M13.Streams.Task/StreamsDemo)
+   [Тесты](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/M13.Streams.Task/ConsoleClient)
+
+   Разработать класс, предоставляющий функциональные возможности по работе с файлами, используя потоки ввода/вывода
