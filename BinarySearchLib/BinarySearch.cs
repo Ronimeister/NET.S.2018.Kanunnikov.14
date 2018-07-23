@@ -76,6 +76,43 @@ namespace BinarySearchLib
 
             return Find(array, element, comparer);
         }
+
+        /// <summary>
+        /// Method that returns position of <paramref name="element"/> in <paramref name="array"/> if such is exist based on <paramref name="comparison"/>
+        /// </summary>
+        /// <param name="array">Needed array</param>
+        /// <param name="element">Needed element to find</param>
+        /// <param name="comparison">Delegate that provides comparation</param>
+        /// <exception cref="ArgumentNullException">Throws when:
+        /// 1) <paramref name="array"/> is equal to null
+        /// 2) <paramref name="element"/> is equal to null
+        /// 3) <paramref name="comparison"/> is equal to null
+        /// </exception>
+        /// <returns>position of <paramref name="element"/> in <paramref name="array"/> if such is exist based on <paramref name="comparison"/></returns>
+        public static int Search(T[] array, T element, Comparison<T> comparison)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException($"{nameof(element)} can't be equal to null!");
+            }
+
+            if (array == null)
+            {
+                throw new ArgumentNullException($"{nameof(array)} can't be equal to null!");
+            }
+
+            if (comparison == null)
+            {
+                throw new ArgumentNullException($"{nameof(comparison)} can't be equal to null!");
+            }
+
+            if (array.Length == 0)
+            {
+                return -1;
+            }
+
+            return Find(array, element, Comparer<T>.Create(comparison));
+        }
         #endregion
 
         #region Private methods
