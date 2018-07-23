@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Fibonacci
 {
@@ -12,21 +13,11 @@ namespace Fibonacci
         /// <param name="quantity">Needed quantity of sequence</param>
         /// <returns>Fibonacci sequence with user <paramref name="quantity"/></returns>
         /// <exception cref="ArgumentException">Throws when <paramref name="quantity"/> is less 1</exception>
-        public static List<long> GenerateSequence(int quantity)
+        public static IEnumerable<BigInteger> GenerateSequence(int quantity)
         {
             if (quantity <= 0)
             {
                 throw new ArgumentException($"{nameof(quantity)} should be bigger than 0!");
-            }
-
-            if (quantity == 1)
-            {
-                return new List<long> { 0 };
-            }
-
-            if (quantity == 2)
-            {
-                return new List<long> { 0, 1 };
             }
 
             return GenerateNewSequence(quantity);
@@ -34,21 +25,17 @@ namespace Fibonacci
         #endregion
 
         #region Private methods
-        private static List<long> GenerateNewSequence(int quantity)
+        private static IEnumerable<BigInteger> GenerateNewSequence(int quantity)
         {
-            long firstNumber = 0, secondNumber = 1, sum = 0;
-            List<long> resultSequence = new List<long>(quantity) { firstNumber, secondNumber};
-
-            while(resultSequence.Count < quantity)
+            BigInteger firstNumber = 0, secondNumber = 1, sum = 0;
+            while(quantity-- != 0)
             {
+                yield return firstNumber;
                 Calculate(ref firstNumber, ref secondNumber, ref sum);
-                resultSequence.Add(sum);
             }
-
-            return resultSequence;
         }
 
-        private static void Calculate(ref long first, ref long second, ref long sum)
+        private static void Calculate(ref BigInteger first, ref BigInteger second, ref BigInteger sum)
         {
             sum = first + second;
             first = second;

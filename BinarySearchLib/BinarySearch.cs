@@ -20,7 +20,7 @@ namespace BinarySearchLib
         /// 2) <paramref name="element"/> is equal to null
         /// </exception>
         /// <returns>position of <paramref name="element"/> in <paramref name="array"/> if such is exist</returns>
-        public static int Search(T[] array, T element)
+        public static int? Search(T[] array, T element)
         {
             if (element == null)
             {
@@ -34,7 +34,7 @@ namespace BinarySearchLib
 
             if (array.Length == 0)
             {
-                return -1;
+                return null;
             }
             
             return Find(array, element, null);
@@ -52,7 +52,7 @@ namespace BinarySearchLib
         /// 3) <paramref name="comparer"/> is equal to null
         /// </exception>
         /// <returns>position of <paramref name="element"/> in <paramref name="array"/> if such is exist based on <paramref name="comparer"/></returns>
-        public static int Search(T[] array, T element, IComparer<T> comparer)
+        public static int? Search(T[] array, T element, IComparer<T> comparer)
         {
             if (element == null)
             {
@@ -71,7 +71,7 @@ namespace BinarySearchLib
 
             if (array.Length == 0)
             {
-                return -1;
+                return null;
             }
 
             return Find(array, element, comparer);
@@ -89,7 +89,7 @@ namespace BinarySearchLib
         /// 3) <paramref name="comparison"/> is equal to null
         /// </exception>
         /// <returns>position of <paramref name="element"/> in <paramref name="array"/> if such is exist based on <paramref name="comparison"/></returns>
-        public static int Search(T[] array, T element, Comparison<T> comparison)
+        public static int? Search(T[] array, T element, Comparison<T> comparison)
         {
             if (element == null)
             {
@@ -108,7 +108,7 @@ namespace BinarySearchLib
 
             if (array.Length == 0)
             {
-                return -1;
+                return null;
             }
 
             return Find(array, element, Comparer<T>.Create(comparison));
@@ -116,7 +116,7 @@ namespace BinarySearchLib
         #endregion
 
         #region Private methods
-        private static int Find(T[] array, T element, IComparer<T> comparer)
+        private static int? Find(T[] array, T element, IComparer<T> comparer)
         {
             if (comparer == null)
             {
@@ -146,7 +146,7 @@ namespace BinarySearchLib
                 }
             }
 
-            return -1;
+            return null;
         }
         #endregion
     }

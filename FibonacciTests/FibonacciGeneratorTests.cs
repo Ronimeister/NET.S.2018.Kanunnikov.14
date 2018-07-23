@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Fibonacci;
+using System.Numerics;
 
 namespace FibonacciTests
 {
@@ -15,11 +14,11 @@ namespace FibonacciTests
         public void FibonacciGenerator_IsCorrect()
         {
             int quantity = 6;
-            List<List<long>> expectedSequences = new List<List<long>> { new List<long> { 0 },
-                new List<long> { 0, 1 }, new List<long> { 0, 1, 1 }, new List<long> { 0, 1, 1, 2},
-                new List<long> { 0, 1, 1, 2, 3} , new List<long> { 0, 1, 1, 2, 3, 5 } };
+            List<List<BigInteger>> expectedSequences = new List<List<BigInteger>> { new List<BigInteger> { 0 },
+                new List<BigInteger> { 0, 1 }, new List<BigInteger> { 0, 1, 1 }, new List<BigInteger> { 0, 1, 1, 2},
+                new List<BigInteger> { 0, 1, 1, 2, 3} , new List<BigInteger> { 0, 1, 1, 2, 3, 5 } };
 
-            List<long> actual;
+            IEnumerable<BigInteger> actual;
             for(int i = 1; i <= quantity; i++)
             {
                 actual = FibonacciGenerator.GenerateSequence(i);
