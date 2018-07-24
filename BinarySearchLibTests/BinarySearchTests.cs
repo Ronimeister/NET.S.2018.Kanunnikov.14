@@ -38,7 +38,7 @@ namespace BinarySearchLibTests
                 return 0;
             }
 
-            Comparer<int> comparer = Comparer<int>.Create(comparisson);
+            IComparer<int> comparer = Comparer<int>.Create(comparisson);
 
             return BinarySearch<int>.Search(array, element, comparer);
         }

@@ -74,6 +74,11 @@ namespace BinarySearchLib
                 return null;
             }
 
+            if (typeof(T).IsAssignableFrom(typeof(IComparable<T>)))
+            {
+                throw new ArgumentException($"{nameof(T)} should be inherited from IComparable<T>!");
+            }
+
             return Find(array, element, comparer);
         }
 
@@ -109,6 +114,11 @@ namespace BinarySearchLib
             if (array.Length == 0)
             {
                 return null;
+            }
+
+            if (typeof(T).IsAssignableFrom(typeof(IComparable<T>)))
+            {
+                throw new ArgumentException($"{nameof(T)} should be inherited from IComparable<T>!");
             }
 
             return Find(array, element, Comparer<T>.Create(comparison));
