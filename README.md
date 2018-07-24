@@ -22,3 +22,8 @@
    [Тесты](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/M13.Streams.Task/ConsoleClient)
 
    Разработать класс, предоставляющий функциональные возможности по работе с файлами, используя потоки ввода/вывода
+
+5) [Решение](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/FilterLib)
+   [Тесты](https://github.com/Ronimeister/NET.S.2018.Kanunnikov.14/tree/master/FilterLibTests)
+
+   метод-фильтр - реализовать как обобщенные методы расширения
