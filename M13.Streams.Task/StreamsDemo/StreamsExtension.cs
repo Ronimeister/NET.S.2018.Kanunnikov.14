@@ -16,73 +16,48 @@ namespace StreamsDemo
         public static int ByByteCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
-            byte[] byteArray;
-            using (FileStream readStream = File.OpenRead(sourcePath))
+            int bytes = 0;
+            using(FileStream readStream = File.OpenRead(sourcePath))
             {
-                byteArray = new byte[readStream.Length];
-                readStream.Read(byteArray, 0, byteArray.Length);               
-            }
-
-            using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
-            {
-                foreach(byte b in byteArray)
+                using(FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
                 {
-                    writeStream.WriteByte(b);
+                    for(int i = 0; i < readStream.Length; i++)
+                    {
+                        writeStream.WriteByte((byte)readStream.ReadByte());
+                        bytes++;
+                    }
                 }
             }
 
-            return byteArray.Length;
+            return bytes;
         }
         
         public static int InMemoryByByteCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
-            string readingResult = string.Empty;
 
-            using (StreamReader sr = new StreamReader(sourcePath, Encoding.UTF8))
-            {
-                readingResult = sr.ReadToEnd();
-            }
-
-            byte[] readingResultBytes = Encoding.UTF8.GetBytes(readingResult);
-            byte[] writingBytes = new byte[readingResultBytes.Length];
-
-            using (MemoryStream ms = new MemoryStream(readingResultBytes, 0, readingResultBytes.Length))
-            {
-                ms.Write(readingResultBytes, 0, readingResultBytes.Length);
-                writingBytes = ms.ToArray();
-            }
-
-            char[] writingChars = Encoding.UTF8.GetChars(writingBytes);
-
-            using (StreamWriter sw = new StreamWriter(destinationPath, false, Encoding.UTF8))
-            {
-                foreach (char c in writingChars)
-                {
-                    sw.Write(c);
-                }
-            }
-
-            return writingBytes.Length;
+            return 0;
         }
 
         public static int ByBlockCopy(string sourcePath, string destinationPath)
         {
             InputValidation(sourcePath, destinationPath);
-
-            byte[] byteArray;
+            int bytes = 0;
+            int bytesByDefault = 100;
             using (FileStream readStream = File.OpenRead(sourcePath))
             {
-                byteArray = new byte[readStream.Length];
-                readStream.Read(byteArray, 0, byteArray.Length);
+                using(FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
+                {
+                    byte[] temp = new byte[bytesByDefault];
+                    while (readStream.Read(temp, 0, temp.Length) > 0)
+                    {
+                        writeStream.Write(temp, 0, temp.Length);
+                    }
+                    bytes = (int)readStream.Length;
+                }
             }
 
-            using (FileStream writeStream = new FileStream(destinationPath, FileMode.Open))
-            {
-                writeStream.Write(byteArray, 0, byteArray.Length);
-            }
-
-            return byteArray.Length;
+            return bytes;
         }
 
         public static int InMemoryByBlockCopy(string sourcePath, string destinationPath)
@@ -199,3 +174,33 @@ namespace StreamsDemo
         #endregion
     }
 }
+
+/*
+ * string readingResult = string.Empty;
+
+            using (StreamReader sr = new StreamReader(sourcePath, Encoding.UTF8))
+            {
+                readingResult = sr.ReadToEnd();
+            }
+
+            byte[] readingResultBytes = Encoding.UTF8.GetBytes(readingResult);
+            byte[] writingBytes = new byte[readingResultBytes.Length];
+
+            using (MemoryStream ms = new MemoryStream(readingResultBytes, 0, readingResultBytes.Length))
+            {
+                ms.Write(readingResultBytes, 0, readingResultBytes.Length);
+                writingBytes = ms.ToArray();
+            }
+
+            char[] writingChars = Encoding.UTF8.GetChars(writingBytes);
+
+            using (StreamWriter sw = new StreamWriter(destinationPath, false, Encoding.UTF8))
+            {
+                foreach (char c in writingChars)
+                {
+                    sw.Write(c);
+                }
+            }
+
+            return writingBytes.Length;
+*/
